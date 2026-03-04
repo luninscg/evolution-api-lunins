@@ -86,7 +86,7 @@ No painel da aplicação Node.js, em **Environment Variables** ou **Variáveis**
 
 | Variável | Valor |
 |----------|-------|
-| `DATABASE_PROVIDER` | `mysql` |
+| `DATABASE_PROVIDER` | `mysql` *(opcional – o build já usa MySQL por padrão)* |
 | `DATABASE_CONNECTION_URI` | `mysql://evolution_user:SENHA@localhost:3306/evolution_db` |
 | `CACHE_REDIS_ENABLED` | `false` |
 | `CACHE_LOCAL_ENABLED` | `true` |
