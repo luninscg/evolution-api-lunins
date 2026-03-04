@@ -1,5 +1,7 @@
 # Deploy Evolution API - GitHub + Hostinger Node.js
 
+> **Para rodar localmente primeiro:** veja `PASSO_A_PASSO.md` (Docker ou Supabase).
+
 ## Pré-requisitos
 
 1. **Banco de dados**
