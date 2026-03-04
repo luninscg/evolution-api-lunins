@@ -72,7 +72,7 @@ Guia para manter o Evolution API rodando 24/7 no plano Business da Hostinger com
 
    | Campo        | Valor |
    |--------------|-------|
-   | **Build command** | `npm install && npm run db:generate && npm run build` |
+   | **Build command** | `npm install && npm run build` |
    | **Start command** | `npm run start:prod` |
    | **Root directory** | `/` (raiz) |
    | **Node.js version** | 20.x |
