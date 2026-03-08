@@ -31,12 +31,16 @@ jobs:
 
     - name: Install packages
       run: npm ci
-    
+
     - name: Check linting
       run: npm run lint:check
 
-    - name: Generate Prisma client
+    - name: Generate Prisma client (MySQL for Hostinger compatibility)
       run: npm run db:generate
+      env:
+        DATABASE_PROVIDER: mysql
 
     - name: Check build
       run: npm run build
+      env:
+        DATABASE_PROVIDER: mysql

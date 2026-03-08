@@ -6,6 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "node scripts/build-with-env.js",
+    "build:hostinger": "npm run build && npm run db:deploy",
     "start": "tsx ./src/main.ts",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",

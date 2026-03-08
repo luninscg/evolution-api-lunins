@@ -44,15 +44,21 @@ Se a Hostinger informar um host diferente (ex.: `mysql.hostinger.com`), use esse
 4. Escolha o **branch** (geralmente `main` ou `master`).
 5. Defina:
    - **Node.js**: 20.x ou 22.x.
-   - **Comando de build**:  
-     `npm install && npm run build`
-   - **Comando de start**:  
-     `npm run start:prod`
+   - **Comando de build** (recomendado — já roda as migrations do banco):
+     ```bash
+     npm install && npm run build:hostinger
+     ```
+   - **Comando de start**:
+     ```bash
+     npm run start:prod
+     ```
    - **Diretório raiz**: deixe em branco se o projeto estiver na raiz do repositório.
+
+O script `build:hostinger` faz o build da API e aplica as **migrations do MySQL** automaticamente. As variáveis `DATABASE_PROVIDER` e `DATABASE_CONNECTION_URI` precisam estar configuradas no painel **antes** do build.
 
 Se o Hostinger pedir apenas um “start command”, use:  
 `npm run start:prod`  
-(e faça o build antes, se houver etapa de build separada).
+(e use o comando de build acima na etapa de build).
 
 ### Opção B: Deploy por upload (ZIP)
 
@@ -128,6 +134,28 @@ A Evolution API usa **Prisma** e precisa rodar as migrations no MySQL.
 
 Assim as tabelas são criadas no banco que a Evolution usará no Hostinger.
 
+**Se você usou o comando de build recomendado** (`npm run build:hostinger`) no Passo 2, as migrations já rodam na hora do deploy; não é necessário rodar nada manualmente neste passo.
+
+---
+
+## Deploy automático (push = atualizar no ar)
+
+Com o repositório conectado ao Node.js no Hostinger:
+
+1. No painel da aplicação, ative **Deploy automático** ou **Auto-deploy** (quando disponível).
+2. A cada **push** no branch configurado (ex.: `main`), o Hostinger refaz o build e sobe a nova versão.
+3. Use sempre o comando de build recomendado (`npm install && npm run build:hostinger`) para que as migrations rodem em todo deploy.
+
+Fluxo no seu PC:
+
+```bash
+git add .
+git commit -m "feat: sua alteração"
+git push origin main
+```
+
+O Hostinger detecta o push, roda o build (e as migrations) e reinicia a aplicação.
+
 ---
 
 ## Passo 5: Porta e URL da aplicação
@@ -142,7 +170,7 @@ Assim as tabelas são criadas no banco que a Evolution usará no Hostinger.
 
 1. Salve as variáveis de ambiente e **reinicie** (ou faça um novo deploy) da aplicação Node.js no hPanel.
 2. Acesse no navegador (ou via Postman/Insomnia):
-   - `https://sua-url/SERVER_URL/instance/fetchInstances`
+   - `https://sua-url/instance/fetchInstances` (substitua `sua-url` pela URL da sua API)
    - Header: `apikey: SUA_AUTHENTICATION_API_KEY`
 
 Se retornar lista (mesmo vazia) ou pedido de criação de instância, a API está online.
@@ -155,10 +183,10 @@ Para criar uma instância e conectar WhatsApp, use a documentação oficial:
 ## Resumo rápido
 
 1. Criar banco MySQL no hPanel e anotar connection string.
-2. Criar app Node.js (GitHub ou ZIP) com build `npm run build` e start `npm run start:prod`.
-3. Configurar variáveis: `DATABASE_PROVIDER=mysql`, `DATABASE_CONNECTION_URI`, `AUTHENTICATION_API_KEY`, `SERVER_PORT`, `SERVER_URL`, cache local se não tiver Redis.
-4. Rodar migrations (SSH, script de build ou local apontando para o MySQL remoto).
-5. Reiniciar a aplicação e testar a URL da API.
+2. Criar app Node.js pelo **GitHub** com build `npm install && npm run build:hostinger` e start `npm run start:prod`.
+3. Configurar variáveis no painel: `DATABASE_PROVIDER=mysql`, `DATABASE_CONNECTION_URI`, `AUTHENTICATION_API_KEY`, `SERVER_PORT`, `SERVER_URL`, cache local se não tiver Redis.
+4. As migrations rodam automaticamente no build (comando `build:hostinger`). Se não usou esse comando, rodar migrations manualmente (Passo 4).
+5. Ativar deploy automático no Hostinger (opcional) e testar a URL da API.
 
 ---
 
