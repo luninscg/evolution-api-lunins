@@ -3777,7 +3777,7 @@ export class BaileysStartupService extends ChannelStartupService {
           const messageIdStr = Array.isArray(messageId) ? messageId[0] : messageId;
           const isLogicalDeleted = configService.get<Database>('DATABASE').DELETE_DATA.LOGICAL_MESSAGE_DELETE;
           let message = await this.prismaRepository.message.findFirst({
-            where: { key: { path: 'id', equals: messageIdStr } },
+            where: { key: { path: ['id'], equals: messageIdStr } },
           });
           if (isLogicalDeleted) {
             if (!message) return response;
@@ -4198,7 +4198,7 @@ export class BaileysStartupService extends ChannelStartupService {
           if (messageId && this.configService.get<Database>('DATABASE').SAVE_DATA.NEW_MESSAGE) {
             const messageIdStr = Array.isArray(messageId) ? messageId[0] : messageId;
             let message = await this.prismaRepository.message.findFirst({
-              where: { key: { path: 'id', equals: messageIdStr } },
+              where: { key: { path: ['id'], equals: messageIdStr } },
             });
             if (!message) throw new NotFoundException('Message not found');
 
@@ -5036,13 +5036,13 @@ export class BaileysStartupService extends ChannelStartupService {
         messageType: query?.where?.messageType,
         ...timestampFilter,
         AND: [
-          keyFilters?.id ? { key: { path: 'id', equals: keyFilters?.id } } : {},
-          keyFilters?.fromMe ? { key: { path: 'fromMe', equals: keyFilters?.fromMe } } : {},
-          keyFilters?.participant ? { key: { path: 'participant', equals: keyFilters?.participant } } : {},
+          keyFilters?.id ? { key: { path: ['id'], equals: keyFilters?.id } } : {},
+          keyFilters?.fromMe ? { key: { path: ['fromMe'], equals: keyFilters?.fromMe } } : {},
+          keyFilters?.participant ? { key: { path: ['participant'], equals: keyFilters?.participant } } : {},
           {
             OR: [
-              keyFilters?.remoteJid ? { key: { path: 'remoteJid', equals: keyFilters?.remoteJid } } : {},
-              keyFilters?.remoteJidAlt ? { key: { path: 'remoteJidAlt', equals: keyFilters?.remoteJidAlt } } : {},
+              keyFilters?.remoteJid ? { key: { path: ['remoteJid'], equals: keyFilters?.remoteJid } } : {},
+              keyFilters?.remoteJidAlt ? { key: { path: ['remoteJidAlt'], equals: keyFilters?.remoteJidAlt } } : {},
             ],
           },
         ],
@@ -5065,13 +5065,13 @@ export class BaileysStartupService extends ChannelStartupService {
         messageType: query?.where?.messageType,
         ...timestampFilter,
         AND: [
-          keyFilters?.id ? { key: { path: 'id', equals: keyFilters?.id } } : {},
-          keyFilters?.fromMe ? { key: { path: 'fromMe', equals: keyFilters?.fromMe } } : {},
-          keyFilters?.participant ? { key: { path: 'participant', equals: keyFilters?.participant } } : {},
+          keyFilters?.id ? { key: { path: ['id'], equals: keyFilters?.id } } : {},
+          keyFilters?.fromMe ? { key: { path: ['fromMe'], equals: keyFilters?.fromMe } } : {},
+          keyFilters?.participant ? { key: { path: ['participant'], equals: keyFilters?.participant } } : {},
           {
             OR: [
-              keyFilters?.remoteJid ? { key: { path: 'remoteJid', equals: keyFilters?.remoteJid } } : {},
-              keyFilters?.remoteJidAlt ? { key: { path: 'remoteJidAlt', equals: keyFilters?.remoteJidAlt } } : {},
+              keyFilters?.remoteJid ? { key: { path: ['remoteJid'], equals: keyFilters?.remoteJid } } : {},
+              keyFilters?.remoteJidAlt ? { key: { path: ['remoteJidAlt'], equals: keyFilters?.remoteJidAlt } } : {},
             ],
           },
         ],
