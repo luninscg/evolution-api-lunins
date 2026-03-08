@@ -190,6 +190,25 @@ Para criar uma instância e conectar WhatsApp, use a documentação oficial:
 
 ---
 
+## Se aparecer 503 Service Unavailable
+
+1. **Variável PORT**  
+   No painel da app Node.js → Variáveis de ambiente, defina **`PORT`** com o mesmo valor que o Hostinger usa (ex.: `8080`). A API usa `PORT` primeiro e escuta em `0.0.0.0` para o proxy.
+
+2. **Redeploy**  
+   Depois de alterar variáveis, faça **Redeploy** para a nova configuração valer.
+
+3. **Logs**  
+   Em **Runtime logs**, confira se aparece algo como `HTTP - ON: 8080 (0.0.0.0)`. Se a app subir mas o 503 continuar, o proxy pode estar apontando para outra porta — use no painel a porta indicada pelo Hostinger em **`PORT`** e **`SERVER_PORT`**.
+
+4. **Banco**  
+   Se houver erro de conexão com MySQL nos logs, confira **`DATABASE_CONNECTION_URI`** e o host do banco (em alguns planos não é `localhost`).
+
+5. **Recursos**  
+   No hPanel → Uso de recursos: se disco, inodes ou memória estiverem no limite, pode ocorrer 503; libere espaço ou faça upgrade do plano.
+
+---
+
 ## Observações
 
 - **Redis**: não é obrigatório. Com `CACHE_REDIS_ENABLED=false` e `CACHE_LOCAL_ENABLED=true` a API funciona só com cache em memória.
