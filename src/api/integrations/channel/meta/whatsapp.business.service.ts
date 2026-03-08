@@ -758,8 +758,8 @@ export class BusinessStartupService extends ChannelStartupService {
               where: {
                 instanceId: this.instanceId,
                 key: {
-                  path: ['id'],
-                  equals: key.id,
+                  path: 'id',
+                  equals: Array.isArray(key.id) ? key.id[0] : key.id,
                 },
               },
             });
