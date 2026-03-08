@@ -192,8 +192,14 @@ router.get('/assets/*', (req, res) => {
 
 router
   .use((req, res, next) => telemetry.collectTelemetry(req, res, next))
-
+  .get('/health', (req, res) => res.status(HttpStatus.OK).json({ status: 'ok', timestamp: new Date().toISOString() }))
   .get('/', async (req, res) => {
+    let whatsappWebVersion = '0.0.0';
+    try {
+      whatsappWebVersion = (await fetchLatestWaWebVersion({})).version.join('.');
+    } catch {
+      // Fallback if external fetch fails (e.g. network on Hostinger)
+    }
     res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
       message: 'Welcome to the Evolution API, it is working!',
@@ -201,7 +207,7 @@ router
       clientName: databaseConfig.CONNECTION.CLIENT_NAME,
       manager: !serverConfig.DISABLE_MANAGER ? `${req.protocol}://${req.get('host')}/manager` : undefined,
       documentation: `https://doc.evolution-api.com`,
-      whatsappWebVersion: (await fetchLatestWaWebVersion({})).version.join('.'),
+      whatsappWebVersion,
     });
   })
   .post('/verify-creds', authGuard['apikey'], async (req, res) => {
